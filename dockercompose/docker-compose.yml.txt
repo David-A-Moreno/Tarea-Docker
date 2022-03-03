@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - ./sql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    ports:
+      - 5432:5432
+    networks:
+      - network1
+
+  web:
+    image: phpapachepostg
+    volumes:
+      - ./phpcode:/var/www/html
+    stdin_open: true
+    tty: true
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+    networks:
+      - network1
+      - network2
+
+  bash:
+    image: ubuntu
+    stdin_open: true
+    tty: true
+    networks:
+      - network2
+
+networks:
+  network1:
+ # Use a custom driver
+    driver: bridge
+  network2:
+    # Use a custom driver which takes special options
+    driver: bridge
+    driver_opts:
+      foo: "1"
+      bar: "2"
