@@ -16,7 +16,7 @@ services:
       - network1
 
   web:
-    image: phpapachepostg
+    image: php:7.0-apache
     volumes:
       - ./phpcode:/var/www/html
     stdin_open: true
